@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IYTO — International Youth Tech Olympiad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #020b18;
+      --surface: #071428;
+      --card: #0a1e38;
+      --accent: #00d4ff;
+      --accent2: #7c3aed;
+      --gold: #f59e0b;
+      --text: #e2f4ff;
+      --muted: #5b8aaa;
+      --border: rgba(0,212,255,0.15);
+      --glow: 0 0 30px rgba(0,212,255,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── PAGE SYSTEM ── */
+    .page { display: none; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: rgba(2,11,24,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem; font-weight: 800;
+      color: var(--accent);
+      cursor: pointer;
+      text-shadow: 0 0 20px rgba(0,212,255,0.5);
+      letter-spacing: 2px;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 1px;
+      text-transform: uppercase; cursor: pointer;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border: none; padding: 0.5rem 1.2rem;
+      border-radius: 6px; font-family: 'Exo 2', sans-serif;
+      font-weight: 600; font-size: 0.85rem; cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    #userGreeting { color: var(--accent); font-size: 0.85rem; font-weight: 600; }
+
+    /* ── HERO ── */
+    #homePage {
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(0,212,255,0.12) 0%, transparent 50%),
+        var(--bg);
+    }
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 7rem 2rem 4rem;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      font-size: 0.75rem; color: var(--accent);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--accent); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900; line-height: 1.1;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero h1 .line1 { display: block; color: var(--text); }
+    .hero h1 .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      max-width: 600px; color: var(--muted);
+      font-size: 1.1rem; line-height: 1.7; margin: 1.5rem auto;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+    .hero-cta {
+      display: flex; gap: 1rem; justify-content: center;
+      flex-wrap: wrap; animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border: none; padding: 0.9rem 2rem;
+      border-radius: 8px; font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 1px;
+      cursor: pointer; transition: all 0.3s;
+      box-shadow: 0 0 30px rgba(0,212,255,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(0,212,255,0.5); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border); color: var(--text);
+      padding: 0.9rem 2rem; border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 1px;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* STATS */
+    .stats-row {
+      display: flex; gap: 3rem; justify-content: center;
+      flex-wrap: wrap; padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 800;
+      color: var(--accent);
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+    /* SECTIONS */
+    .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      font-size: 0.75rem; color: var(--accent); letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 0.75rem; font-weight: 600;
+    }
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .section-sub { color: var(--muted); font-size: 1rem; max-width: 560px; line-height: 1.7; }
+
+    /* CARDS */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .card-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .card h3 { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .card p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+
+    /* TIMELINE */
+    .timeline { margin-top: 3rem; }
+    .timeline-item { display: flex; gap: 2rem; margin-bottom: 2rem; }
+    .timeline-dot {
+      flex-shrink: 0; width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 0.8rem;
+    }
+    .timeline-content h4 { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .timeline-content p { color: var(--muted); font-size: 0.9rem; }
+    .timeline-date { font-size: 0.75rem; color: var(--gold); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem; text-align: center;
+      color: var(--muted); font-size: 0.85rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── AUTH PAGES ── */
+    .auth-page {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 6rem 1.5rem;
+      background: radial-gradient(ellipse at center, rgba(0,212,255,0.05) 0%, transparent 70%), var(--bg);
+    }
+    .auth-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2.5rem;
+      width: 100%; max-width: 440px;
+    }
+    .auth-title {
+      font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 800;
+      margin-bottom: 0.5rem; text-align: center;
+    }
+    .auth-sub { color: var(--muted); font-size: 0.9rem; text-align: center; margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; background: rgba(0,212,255,0.04);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.75rem 1rem; color: var(--text);
+      font-family: 'Exo 2', sans-serif; font-size: 0.95rem;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(0,212,255,0.15);
+    }
+    .form-group select option { background: var(--surface); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .btn-full {
+      width: 100%; background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border: none; padding: 0.9rem;
+      border-radius: 8px; font-family: 'Orbitron', sans-serif;
+      font-weight: 700; font-size: 0.85rem; letter-spacing: 1px;
+      cursor: pointer; transition: all 0.3s; margin-top: 0.5rem;
+    }
+    .btn-full:hover { opacity: 0.85; transform: translateY(-2px); }
+    .auth-switch { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--muted); }
+    .auth-switch a { color: var(--accent); cursor: pointer; text-decoration: none; }
+    .auth-switch a:hover { text-decoration: underline; }
+    .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; }
+    .divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+    .divider span { font-size: 0.75rem; color: var(--muted); }
+    .error-msg { color: #f87171; font-size: 0.82rem; margin-top: 0.4rem; display: none; }
+    .success-msg {
+      background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.9rem;
+      color: var(--accent); margin-bottom: 1rem; display: none;
+    }
+
+    /* ── OLYMPIAD REGISTER PAGE ── */
+    .olympiad-page {
+      padding: 7rem 1.5rem 4rem;
+      background: radial-gradient(ellipse at 80% 0%, rgba(124,58,237,0.1) 0%, transparent 50%), var(--bg);
+    }
+    .olympiad-header { text-align: center; margin-bottom: 3rem; }
+    .olympiad-form-wrap { max-width: 700px; margin: 0 auto; }
+    .olympiad-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2.5rem;
+    }
+    .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 0.5rem; }
+    .category-card {
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem; cursor: pointer; transition: all 0.2s;
+      text-align: center;
+    }
+    .category-card:hover { border-color: var(--accent); }
+    .category-card.selected { border-color: var(--accent); background: rgba(0,212,255,0.08); }
+    .category-card .cat-icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .category-card .cat-name { font-size: 0.82rem; font-weight: 600; font-family: 'Orbitron', sans-serif; }
+    .category-card .cat-desc { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .step-indicator { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+    .step { flex: 1; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.3s; }
+    .step.done { background: var(--accent); }
+
+    /* ── DASHBOARD ── */
+    .dashboard-page {
+      padding: 7rem 2rem 4rem;
+    }
+    .dash-grid { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; max-width: 1100px; margin: 0 auto; }
+    .dash-sidebar {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem; height: fit-content;
+    }
+    .dash-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900;
+      margin-bottom: 1rem;
+    }
+    .dash-name { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1rem; }
+    .dash-email { color: var(--muted); font-size: 0.8rem; margin-top: 0.2rem; margin-bottom: 1.5rem; }
+    .dash-menu a {
+      display: block; padding: 0.7rem 0.8rem; border-radius: 8px;
+      color: var(--muted); font-size: 0.9rem; cursor: pointer;
+      transition: all 0.2s; text-decoration: none; margin-bottom: 0.2rem;
+    }
+    .dash-menu a:hover, .dash-menu a.active { background: rgba(0,212,255,0.08); color: var(--accent); }
+    .dash-main { }
+    .dash-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .dash-card h3 { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; margin-bottom: 1rem; }
+    .status-badge {
+      display: inline-block; padding: 0.3rem 0.8rem;
+      border-radius: 100px; font-size: 0.75rem; font-weight: 600;
+    }
+    .status-pending { background: rgba(245,158,11,0.15); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
+    .status-confirmed { background: rgba(0,212,255,0.1); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+
+    /* ── ABOUT ── */
+    .about-page { padding: 7rem 2rem 4rem; }
+    .about-hero { text-align: center; max-width: 700px; margin: 0 auto 4rem; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .team-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem; text-align: center;
+    }
+    .team-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; margin: 0 auto 1rem;
+    }
+    .team-card h4 { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; }
+    .team-card p { color: var(--muted); font-size: 0.8rem; margin-top: 0.3rem; }
+
+    /* ── PRIVACY ── */
+    .privacy-page { padding: 7rem 2rem 4rem; max-width: 800px; margin: 0 auto; }
+    .privacy-page h1 { font-family: 'Orbitron', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; }
+    .privacy-page .date { color: var(--muted); font-size: 0.85rem; margin-bottom: 3rem; }
+    .privacy-page h2 { font-family: 'Orbitron', sans-serif; font-size: 1rem; margin: 2rem 0 0.75rem; color: var(--accent); }
+    .privacy-page p { color: var(--muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 1rem; }
+    .privacy-page ul { color: var(--muted); line-height: 2; font-size: 0.95rem; padding-left: 1.5rem; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--surface); border: 1px solid var(--accent);
+      border-radius: 10px; padding: 1rem 1.5rem;
+      color: var(--text); font-size: 0.9rem; z-index: 9999;
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.3s;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media(max-width: 768px) {
+      .nav-links { display: none; }
+      .dash-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ NAVBAR ═══════════════ -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">IY<span>TO</span></div>
+  <div class="nav-links">
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('olympiad')">Olympiad</a>
+    <a onclick="showPage('about')">About</a>
+    <a onclick="showPage('privacy')">Privacy</a>
+  </div>
+  <div id="navAuth">
+    <button class="nav-btn" onclick="showPage('login')">Login / Register</button>
+  </div>
+  <div id="navUser" style="display:none; align-items:center; gap:1rem;">
+    <span id="userGreeting"></span>
+    <button class="nav-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════════ -->
+<div id="homePage" class="page active">
+  <section class="hero">
+    <div class="hero-badge">2025 — Global Registration Open</div>
+    <h1>
+      <span class="line1">International Youth</span>
+      <span class="line2">Tech Olympiad</span>
+    </h1>
+    <p>The world's premier technology competition for young innovators aged 12–25. Compete globally, learn limitlessly, and shape the future of technology.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="showPage('olympiad')">🚀 Register for Olympiad</button>
+      <button class="btn-outline" onclick="showPage('about')">Learn More</button>
+    </div>
+  </section>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Countries</div></div>
+    <div class="stat"><div class="stat-num">10K+</div><div class="stat-label">Participants</div></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Categories</div></div>
+    <div class="stat"><div class="stat-num">$50K+</div><div class="stat-label">Prize Pool</div></div>
+  </div>
+
+  <!-- Categories -->
+  <div class="section">
+    <div class="section-tag">Competition Tracks</div>
+    <div class="section-title">Choose Your Domain</div>
+    <p class="section-sub">Compete in six cutting-edge technology categories, each designed to challenge and inspire young minds.</p>
+    <div class="cards-grid">
+      <div class="card"><div class="card-icon">🤖</div><h3>AI & Machine Learning</h3><p>Build intelligent systems, train models, and solve real-world problems with AI.</p></div>
+      <div class="card"><div class="card-icon">💻</div><h3>Software Engineering</h3><p>Design and develop scalable applications that solve global challenges.</p></div>
+      <div class="card"><div class="card-icon">🔒</div><h3>Cybersecurity</h3><p>Defend systems, crack codes, and compete in CTF challenges.</p></div>
+      <div class="card"><div class="card-icon">🌐</div><h3>Web & App Dev</h3><p>Create stunning web and mobile applications with modern technologies.</p></div>
+      <div class="card"><div class="card-icon">🔬</div><h3>Data Science</h3><p>Analyze datasets, build visualizations, and extract meaningful insights.</p></div>
+      <div class="card"><div class="card-icon">🤝</div><h3>Tech for Good</h3><p>Use technology to address social, environmental, and humanitarian issues.</p></div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="section">
+    <div class="section-tag">Important Dates</div>
+    <div class="section-title">Competition Timeline</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">1</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Jan — Mar 2025</div>
+          <h4>Registration Opens</h4>
+          <p>Sign up and choose your competition category. Early bird discounts available.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">2</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Apr — Jun 2025</div>
+          <h4>Qualification Round</h4>
+          <p>Online preliminary round. Top 20% advance to the semi-finals.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">3</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Jul — Aug 2025</div>
+          <h4>Semi-Finals</h4>
+          <p>Regional competitions held in 10 cities worldwide.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">4</div>
+        <div class="timeline-content">
+          <div class="timeline-date">Oct 2025</div>
+          <h4>Grand Finale</h4>
+          <p>Top finalists compete at the international grand finale for medals and prizes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="text-align:center; padding: 3rem 2rem 5rem;">
+    <div class="section-tag" style="justify-content:center; display:block;">Ready to compete?</div>
+    <h2 style="font-family:'Orbitron',sans-serif; font-size:2rem; margin-bottom:1rem;">Join IYTO 2025 Today</h2>
+    <p style="color:var(--muted); margin-bottom:2rem;">Registration is free. Open to all youth aged 12–25 worldwide.</p>
+    <button class="btn-primary" onclick="showPage('olympiad')">Register Now — It's Free</button>
+  </div>
+
+  <footer>
+    <p>© 2025 International Youth Tech Olympiad · <a href="mailto:iyto.official@hotmail.com">iyto.official@hotmail.com</a> · <a onclick="showPage('privacy')">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════════════
+     LOGIN PAGE
+════════════════════════════════════════════ -->
+<div id="loginPage" class="page">
+  <div class="auth-page">
+    <div class="auth-box">
+      <div class="auth-title">Welcome Back</div>
+      <p class="auth-sub">Login to your IYTO account</p>
+      <div class="success-msg" id="loginSuccess">✅ Login successful! Redirecting...</div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" />
+        <div class="error-msg" id="loginEmailErr">Please enter a valid email.</div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" />
+        <div class="error-msg" id="loginPassErr">Password must be at least 6 characters.</div>
+      </div>
+      <div style="text-align:right; margin-bottom:1rem;">
+        <a style="font-size:0.8rem; color:var(--accent); cursor:pointer;">Forgot password?</a>
+      </div>
+      <button class="btn-full" onclick="doLogin()">Login →</button>
+      <div class="divider"><hr><span>or</span><hr></div>
+      <div class="auth-switch">
+        Don't have an account? <a onclick="showPage('signup')">Create one free</a>
+      </div>
+      <div class="auth-switch" style="margin-top:0.5rem;">
+        <a onclick="showPage('home')" style="color:var(--muted);">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SIGNUP PAGE
+════════════════════════════════════════════ -->
+<div id="signupPage" class="page">
+  <div class="auth-page">
+    <div class="auth-box">
+      <div class="auth-title">Create Account</div>
+      <p class="auth-sub">Join thousands of young innovators at IYTO</p>
+      <div class="success-msg" id="signupSuccess">✅ Account created! Welcome to IYTO!</div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="signupName" placeholder="Your full name" />
+        <div class="error-msg" id="signupNameErr">Name is required.</div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="signupEmail" placeholder="you@example.com" />
+        <div class="error-msg" id="signupEmailErr">Enter a valid email.</div>
+      </div>
+      <div class="form-group">
+        <label>Country</label>
+        <select id="signupCountry">
+          <option value="">Select your country</option>
+          <option>Bangladesh</option><option>India</option><option>Pakistan</option>
+          <option>United States</option><option>United Kingdom</option><option>Canada</option>
+          <option>Australia</option><option>Germany</option><option>France</option>
+          <option>Japan</option><option>China</option><option>Brazil</option>
+          <option>Nigeria</option><option>South Africa</option><option>Other</option>
+        </select>
+        <div class="error-msg" id="signupCountryErr">Please select a country.</div>
+      </div>
+      <div class="form-group">
+        <label>Date of Birth</label>
+        <input type="date" id="signupDob" />
+        <div class="error-msg" id="signupDobErr">Must be aged 12–25.</div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="signupPassword" placeholder="At least 8 characters" />
+        <div class="error-msg" id="signupPassErr">Password must be at least 8 characters.</div>
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="signupConfirm" placeholder="Repeat password" />
+        <div class="error-msg" id="signupConfirmErr">Passwords do not match.</div>
+      </div>
+      <button class="btn-full" onclick="doSignup()">Create Account →</button>
+      <div class="auth-switch" style="margin-top:1rem;">
+        Already have an account? <a onclick="showPage('login')">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     OLYMPIAD REGISTRATION PAGE
+════════════════════════════════════════════ -->
+<div id="olympiadPage" class="page">
+  <div class="olympiad-page">
+    <div class="olympiad-header">
+      <div class="section-tag">IYTO 2025</div>
+      <h1 style="font-family:'Orbitron',sans-serif; font-size:2.5rem; font-weight:900; margin-bottom:0.5rem;">Olympiad Registration</h1>
+      <p style="color:var(--muted);">Complete the form below to register for the International Youth Tech Olympiad</p>
+    </div>
+
+    <div class="olympiad-form-wrap">
+      <!-- Login prompt for guests -->
+      <div id="loginPromptBox" class="dash-card" style="text-align:center; display:none;">
+        <div style="font-size:2rem; margin-bottom:1rem;">🔐</div>
+        <h3 style="font-family:'Orbitron',sans-serif; margin-bottom:0.5rem;">Login Required</h3>
+        <p style="color:var(--muted); margin-bottom:1.5rem;">You need an account to register for the Olympiad. It's free!</p>
+        <div style="display:flex; gap:1rem; justify-content:center;">
+          <button class="btn-primary" onclick="showPage('login')">Login</button>
+          <button class="btn-outline" onclick="showPage('signup')">Create Account</button>
+        </div>
+      </div>
+
+      <!-- Registration form for logged in users -->
+      <div id="olympiadForm" class="olympiad-box">
+        <div class="step-indicator">
+          <div class="step done" id="step1"></div>
+          <div class="step" id="step2"></div>
+          <div class="step" id="step3"></div>
+        </div>
+
+        <div id="oFormStep1">
+          <h3 style="font-family:'Orbitron',sans-serif; margin-bottom:1.5rem; font-size:1rem;">Step 1 — Personal Info</h3>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="oName" placeholder="As on official document" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="oEmail" placeholder="your@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" id="oDob" />
+          </div>
+          <div class="form-group">
+            <label>Country / Region</label>
+            <select id="oCountry">
+              <option value="">Select country</option>
+              <option>Bangladesh</option><option>India</option><option>Pakistan</option>
+              <option>United States</option><option>United Kingdom</option><option>Canada</option>
+              <option>Australia</option><option>Germany</option><option>France</option>
+              <option>Japan</option><option>China</option><option>Brazil</option>
+              <option>Nigeria</option><option>South Africa</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>School / University</label>
+            <input type="text" id="oInstitution" placeholder="Name of your institution" />
+          </div>
+          <button class="btn-full" onclick="oNext(1)">Next Step →</button>
+        </div>
+
+        <div id="oFormStep2" style="display:none;">
+          <h3 style="font-family:'Orbitron',sans-serif; margin-bottom:1rem; font-size:1rem;">Step 2 — Choose Category</h3>
+          <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1.5rem;">Select the competition track you want to participate in:</p>
+          <div class="category-grid">
+            <div class="category-card" onclick="selectCat(this,'ai')">
+              <div class="cat-icon">🤖</div>
+              <div class="cat-name">AI & ML</div>
+              <div class="cat-desc">Artificial Intelligence</div>
+            </div>
+            <div class="category-card" onclick="selectCat(this,'software')">
+              <div class="cat-icon">💻</div>
+              <div class="cat-name">Software Eng</div>
+              <div class="cat-desc">App Development</div>
+            </div>
+            <div class="category-card" onclick="selectCat(this,'cyber')">
+              <div class="cat-icon">🔒</div>
+              <div class="cat-name">Cybersecurity</div>
+              <div class="cat-desc">CTF & Defense</div>
+            </div>
+            <div class="category-card" onclick="selectCat(this,'web')">
+              <div class="cat-icon">🌐</div>
+              <div class="cat-name">Web & App</div>
+              <div class="cat-desc">UI/UX & Web Dev</div>
+            </div>
+            <div class="category-card" onclick="selectCat(this,'data')">
+              <div class="cat-icon">🔬</div>
+              <div class="cat-name">Data Science</div>
+              <div class="cat-desc">Analytics & ML</div>
+            </div>
+            <div class="category-card" onclick="selectCat(this,'good')">
+              <div class="cat-icon">🤝</div>
+              <div class="cat-name">Tech for Good</div>
+              <div class="cat-desc">Social Impact</div>
+            </div>
+          </div>
+          <div class="error-msg" id="catErr" style="display:none; margin-top:0.5rem;">Please select a category.</div>
+          <div style="display:flex; gap:1rem; margin-top:1.5rem;">
+            <button class="btn-outline" style="flex:1;" onclick="oBack(2)">← Back</button>
+            <button class="btn-full" style="flex:2;" onclick="oNext(2)">Next Step →</button>
+          </div>
+        </div>
+
+        <div id="oFormStep3" style="display:none;">
+          <h3 style="font-family:'Orbitron',sans-serif; margin-bottom:1rem; font-size:1rem;">Step 3 — Confirm & Submit</h3>
+          <div id="oSummary" style="background:rgba(0,212,255,0.05); border:1px solid var(--border); border-radius:10px; padding:1.5rem; margin-bottom:1.5rem; font-size:0.9rem; line-height:2; color:var(--muted);"></div>
+          <div class="form-group">
+            <label>How did you hear about IYTO?</label>
+            <select id="oSource">
+              <option>Social Media</option><option>School / Teacher</option>
+              <option>Friend / Family</option><option>Search Engine</option><option>Other</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:flex-start; gap:0.75rem; margin-bottom:1.5rem;">
+            <input type="checkbox" id="oAgree" style="margin-top:3px; width:auto;" />
+            <label for="oAgree" style="font-size:0.85rem; color:var(--muted); cursor:pointer;">
+              I agree to the <a onclick="showPage('privacy')" style="color:var(--accent);">Privacy Policy</a> and Terms of Participation. I confirm all information provided is accurate.
+            </label>
+          </div>
+          <div style="display:flex; gap:1rem;">
+            <button class="btn-outline" style="flex:1;" onclick="oBack(3)">← Back</button>
+            <button class="btn-full" style="flex:2;" onclick="oSubmit()">🏆 Submit Registration</button>
+          </div>
+        </div>
+
+        <!-- Success State -->
+        <div id="oSuccess" style="display:none; text-align:center; padding:2rem 0;">
+          <div style="font-size:4rem; margin-bottom:1rem;">🏆</div>
+          <h2 style="font-family:'Orbitron',sans-serif; color:var(--accent); margin-bottom:0.5rem;">Registration Complete!</h2>
+          <p style="color:var(--muted); margin-bottom:1.5rem;">Your application has been submitted. Check your email for confirmation.</p>
+          <div id="oRegId" style="background:rgba(0,212,255,0.08); border:1px solid var(--border); border-radius:8px; padding:1rem; font-family:'Orbitron',sans-serif; font-size:0.85rem; color:var(--accent); margin-bottom:2rem;"></div>
+          <button class="btn-primary" onclick="showPage('dashboard')">Go to Dashboard →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     DASHBOARD PAGE
+════════════════════════════════════════════ -->
+<div id="dashboardPage" class="page">
+  <div class="dashboard-page">
+    <div class="dash-grid">
+      <div class="dash-sidebar">
+        <div class="dash-avatar" id="dashAvatar">?</div>
+        <div class="dash-name" id="dashName">—</div>
+        <div class="dash-email" id="dashEmail">—</div>
+        <div class="dash-menu">
+          <a class="active">📊 Dashboard</a>
+          <a onclick="showPage('olympiad')">🏆 Register for Olympiad</a>
+          <a onclick="showPage('home')">🏠 Home</a>
+          <a onclick="logout()" style="color:var(--muted);">🚪 Logout</a>
+        </div>
+      </div>
+      <div class="dash-main">
+        <div class="dash-card">
+          <h3>Welcome back! 👋</h3>
+          <p style="color:var(--muted); font-size:0.9rem;">Your IYTO participant portal. Manage registrations and track your competition status here.</p>
+        </div>
+        <div class="dash-card" id="dashRegStatus">
+          <h3>Registration Status</h3>
+          <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;" id="dashRegText">You haven't registered for an olympiad yet.</p>
+          <button class="btn-primary" onclick="showPage('olympiad')">Register Now →</button>
+        </div>
+        <div class="dash-card">
+          <h3>Important Dates</h3>
+          <div style="font-size:0.85rem; color:var(--muted); line-height:2.2;">
+            📅 Registration Deadline: <span style="color:var(--text);">March 31, 2025</span><br>
+            📅 Qualification Round: <span style="color:var(--text);">April 15 – June 30, 2025</span><br>
+            📅 Semi-Finals: <span style="color:var(--text);">July – August 2025</span><br>
+            📅 Grand Finale: <span style="color:var(--text);">October 2025</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     ABOUT PAGE
+════════════════════════════════════════════ -->
+<div id="aboutPage" class="page">
+  <div class="about-page">
+    <div class="about-hero">
+      <div class="section-tag">About IYTO</div>
+      <h1 style="font-family:'Orbitron',sans-serif; font-size:2.5rem; font-weight:900; margin-bottom:1rem;">Empowering the Next Generation of Tech Leaders</h1>
+      <p style="color:var(--muted); line-height:1.8;">The International Youth Tech Olympiad (IYTO) was founded with a singular mission: to discover, nurture, and celebrate the most talented young technologists from every corner of the world.</p>
+    </div>
+
+    <div class="section" style="padding-top:0;">
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon">🌍</div>
+          <h3>Our Mission</h3>
+          <p>To create an inclusive global platform where young innovators can showcase their skills, learn from peers, and build a community that drives positive change through technology.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎯</div>
+          <h3>Our Vision</h3>
+          <p>A world where every young person, regardless of background, has the opportunity to participate in world-class technology competitions and fulfill their potential.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💡</div>
+          <h3>Our Values</h3>
+          <p>Excellence, innovation, inclusivity, integrity, and collaboration. We believe in fair competition and in lifting each other up as a global community.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:4rem;">
+        <div class="section-tag">The Team</div>
+        <div class="section-title">Organizing Committee</div>
+        <div class="team-grid">
+          <div class="team-card"><div class="team-avatar">👨‍💻</div><h4>Dr. A. Rahman</h4><p>Founder & President</p></div>
+          <div class="team-card"><div class="team-avatar">👩‍🔬</div><h4>Dr. S. Patel</h4><p>Chief Academic Officer</p></div>
+          <div class="team-card"><div class="team-avatar">👨‍💼</div><h4>Mr. J. Kim</h4><p>Head of Operations</p></div>
+          <div class="team-card"><div class="team-avatar">👩‍🎨</div><h4>Ms. L. Chen</h4><p>Director of Outreach</p></div>
+        </div>
+      </div>
+
+      <div style="margin-top:4rem; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:2.5rem; text-align:center;">
+        <h2 style="font-family:'Orbitron',sans-serif; font-size:1.5rem; margin-bottom:1rem;">Get in Touch</h2>
+        <p style="color:var(--muted); margin-bottom:1.5rem;">For partnership, sponsorship, or general inquiries:</p>
+        <a href="mailto:iyto.official@hotmail.com" style="color:var(--accent); font-size:1.1rem; font-family:'Orbitron',sans-serif;">iyto.official@hotmail.com</a><br><br>
+        <a href="https://iyto.online" style="color:var(--muted);">iyto.online</a>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>© 2025 International Youth Tech Olympiad · <a href="mailto:iyto.official@hotmail.com">iyto.official@hotmail.com</a> · <a onclick="showPage('privacy')">Privacy Policy</a></p>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PRIVACY PAGE
+════════════════════════════════════════════ -->
+<div id="privacyPage" class="page">
+  <div class="privacy-page" style="padding-top:6rem;">
+    <h1>Privacy Policy</h1>
+    <p class="date">Last updated: January 1, 2025 · International Youth Tech Olympiad</p>
+
+    <h2>1. Introduction</h2>
+    <p>The International Youth Tech Olympiad ("IYTO", "we", "our", or "us") is committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website at <strong>iyto.online</strong> or participate in our competitions.</p>
+
+    <h2>2. Information We Collect</h2>
+    <p>We may collect the following types of information:</p>
+    <ul>
+      <li>Personal identification: name, date of birth, email address, country of residence</li>
+      <li>Educational information: school or university name, grade/year of study</li>
+      <li>Competition data: category choices, submission files, scores</li>
+      <li>Technical data: IP address, browser type, device information, usage logs</li>
+    </ul>
+
+    <h2>3. How We Use Your Information</h2>
+    <p>We use collected information to:</p>
+    <ul>
+      <li>Process and manage your competition registration</li>
+      <li>Communicate important updates, results, and announcements</li>
+      <li>Verify eligibility and prevent fraud</li>
+      <li>Improve our platform and user experience</li>
+      <li>Issue certificates, medals, and prizes to winners</li>
+    </ul>
+
+    <h2>4. Data Sharing</h2>
+    <p>We do not sell, trade, or rent your personal information to third parties. We may share your data with trusted service providers (such as email services and cloud hosting) solely to operate our platform. We may disclose information if required by law.</p>
+
+    <h2>5. Children's Privacy</h2>
+    <p>IYTO welcomes participants as young as 12 years old. For participants under 18, we require parental/guardian consent. We take extra care to protect the data of minors and do not use their information for marketing purposes.</p>
+
+    <h2>6. Data Security</h2>
+    <p>We implement industry-standard security measures including SSL encryption, secure servers, and access controls to protect your personal information. However, no method of transmission over the internet is 100% secure.</p>
+
+    <h2>7. Your Rights</h2>
+    <p>You have the right to access, correct, or delete your personal data at any time. To exercise these rights, contact us at <a href="mailto:iyto.official@hotmail.com">iyto.official@hotmail.com</a>.</p>
+
+    <h2>8. Cookies</h2>
+    <p>We use cookies to maintain your session and improve your experience. You can disable cookies in your browser settings, though this may affect site functionality.</p>
+
+    <h2>9. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. We will notify registered users of significant changes via email. Continued use of our services constitutes acceptance of the updated policy.</p>
+
+    <h2>10. Contact Us</h2>
+    <p>For any questions about this Privacy Policy, please contact us at:<br>
+    📧 <a href="mailto:iyto.official@hotmail.com">iyto.official@hotmail.com</a><br>
+    🌐 <a href="https://iyto.online">iyto.online</a></p>
+  </div>
+  <footer style="max-width:800px; margin:0 auto;">
+    <p>© 2025 International Youth Tech Olympiad · <a href="mailto:iyto.official@hotmail.com">iyto.official@hotmail.com</a></p>
+  </footer>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ══════════════════════════════════════════
+  // SIMPLE AUTH SIMULATION (localStorage-based)
+  // Replace with Firebase for production!
+  // ══════════════════════════════════════════
+
+  let currentUser = null;
+  let selectedCategory = '';
+  let olympiadData = {};
+
+  // Check if user is logged in from localStorage
+  function initAuth() {
+    const saved = localStorage.getItem('iyto_user');
+    if (saved) {
+      currentUser = JSON.parse(saved);
+      updateNavForUser();
+    }
+  }
+
+  function updateNavForUser() {
+    if (currentUser) {
+      document.getElementById('navAuth').style.display = 'none';
+      document.getElementById('navUser').style.display = 'flex';
+      document.getElementById('userGreeting').textContent = `Hi, ${currentUser.name.split(' ')[0]}!`;
+      // Update dashboard
+      const initials = currentUser.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+      document.getElementById('dashAvatar').textContent = initials;
+      document.getElementById('dashName').textContent = currentUser.name;
+      document.getElementById('dashEmail').textContent = currentUser.email;
+    } else {
+      document.getElementById('navAuth').style.display = 'block';
+      document.getElementById('navUser').style.display = 'none';
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem('iyto_user');
+    currentUser = null;
+    updateNavForUser();
+    showPage('home');
+    showToast('Logged out successfully.');
+  }
+
+  // ══ PAGE NAVIGATION ══
+  function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const pages = {
+      home: 'homePage', login: 'loginPage', signup: 'signupPage',
+      olympiad: 'olympiadPage', dashboard: 'dashboardPage',
+      about: 'aboutPage', privacy: 'privacyPage'
+    };
+    const el = document.getElementById(pages[page]);
+    if (el) {
+      el.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+    // Special logic for olympiad page
+    if (page === 'olympiad') {
+      if (!currentUser) {
+        document.getElementById('loginPromptBox').style.display = 'block';
+        document.getElementById('olympiadForm').style.display = 'none';
+      } else {
+        document.getElementById('loginPromptBox').style.display = 'none';
+        document.getElementById('olympiadForm').style.display = 'block';
+        document.getElementById('oEmail').value = currentUser.email;
+        document.getElementById('oName').value = currentUser.name;
+      }
+    }
+    if (page === 'dashboard' && !currentUser) {
+      showPage('login');
+    }
+  }
+
+  // ══ TOAST ══
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ══ VALIDATION HELPERS ══
+  function showErr(id, show) {
+    document.getElementById(id).style.display = show ? 'block' : 'none';
+  }
+  function val(id) { return document.getElementById(id).value.trim(); }
+
+  // ══ LOGIN ══
+  function doLogin() {
+    let ok = true;
+    const email = val('loginEmail');
+    const pass = val('loginPassword');
+    if (!email.includes('@')) { showErr('loginEmailErr', true); ok = false; } else showErr('loginEmailErr', false);
+    if (pass.length < 6) { showErr('loginPassErr', true); ok = false; } else showErr('loginPassErr', false);
+    if (!ok) return;
+
+    // Check saved users
+    const users = JSON.parse(localStorage.getItem('iyto_users') || '[]');
+    const user = users.find(u => u.email === email && u.password === pass);
+    if (!user) {
+      document.getElementById('loginEmailErr').textContent = 'Invalid email or password.';
+      showErr('loginEmailErr', true);
+      return;
+    }
+
+    currentUser = user;
+    localStorage.setItem('iyto_user', JSON.stringify(user));
+    updateNavForUser();
+    document.getElementById('loginSuccess').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('loginSuccess').style.display = 'none';
+      showPage('dashboard');
+    }, 1500);
+  }
+
+  // ══ SIGNUP ══
+  function doSignup() {
+    let ok = true;
+    const name = val('signupName');
+    const email = val('signupEmail');
+    const country = val('signupCountry');
+    const dob = val('signupDob');
+    const pass = val('signupPassword');
+    const confirm = val('signupConfirm');
+
+    if (!name) { showErr('signupNameErr', true); ok = false; } else showErr('signupNameErr', false);
+    if (!email.includes('@')) { showErr('signupEmailErr', true); ok = false; } else showErr('signupEmailErr', false);
+    if (!country) { showErr('signupCountryErr', true); ok = false; } else showErr('signupCountryErr', false);
+
+    // Age check 12–25
+    if (dob) {
+      const age = (new Date() - new Date(dob)) / (365.25 * 24 * 3600 * 1000);
+      if (age < 12 || age > 25) { showErr('signupDobErr', true); ok = false; } else showErr('signupDobErr', false);
+    } else { showErr('signupDobErr', true); ok = false; }
+
+    if (pass.length < 8) { showErr('signupPassErr', true); ok = false; } else showErr('signupPassErr', false);
+    if (pass !== confirm) { showErr('signupConfirmErr', true); ok = false; } else showErr('signupConfirmErr', false);
+
+    if (!ok) return;
+
+    // Check duplicate
+    const users = JSON.parse(localStorage.getItem('iyto_users') || '[]');
+    if (users.find(u => u.email === email)) {
+      document.getElementById('signupEmailErr').textContent = 'This email is already registered.';
+      showErr('signupEmailErr', true);
+      return;
+    }
+
+    const newUser = { name, email, country, dob, password: pass };
+    users.push(newUser);
+    localStorage.setItem('iyto_users', JSON.stringify(users));
+    currentUser = newUser;
+    localStorage.setItem('iyto_user', JSON.stringify(newUser));
+    updateNavForUser();
+
+    document.getElementById('signupSuccess').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('signupSuccess').style.display = 'none';
+      showPage('dashboard');
+    }, 1500);
+  }
+
+  // ══ OLYMPIAD FORM ══
+  function oNext(step) {
+    if (step === 1) {
+      // Validate step 1
+      const name = val('oName');
+      const email = val('oEmail');
+      const dob = val('oDob');
+      const country = val('oCountry');
+      const inst = val('oInstitution');
+      if (!name || !email.includes('@') || !dob || !country || !inst) {
+        showToast('Please fill in all required fields.');
+        return;
+      }
+      olympiadData = { name, email, dob, country, institution: inst };
+      document.getElementById('oFormStep1').style.display = 'none';
+      document.getElementById('oFormStep2').style.display = 'block';
+      document.getElementById('step2').classList.add('done');
+    } else if (step === 2) {
+      if (!selectedCategory) {
+        document.getElementById('catErr').style.display = 'block';
+        return;
+      }
+      document.getElementById('catErr').style.display = 'none';
+      olympiadData.category = selectedCategory;
+      // Show summary
+      const catNames = { ai:'AI & Machine Learning', software:'Software Engineering', cyber:'Cybersecurity', web:'Web & App Development', data:'Data Science', good:'Tech for Good' };
+      document.getElementById('oSummary').innerHTML = `
+        <strong style="color:var(--text);">Registration Summary</strong><br>
+        👤 Name: ${olympiadData.name}<br>
+        📧 Email: ${olympiadData.email}<br>
+        🌍 Country: ${olympiadData.country}<br>
+        🏫 Institution: ${olympiadData.institution}<br>
+        🏆 Category: ${catNames[selectedCategory] || selectedCategory}
+      `;
+      document.getElementById('oFormStep2').style.display = 'none';
+      document.getElementById('oFormStep3').style.display = 'block';
+      document.getElementById('step3').classList.add('done');
+    }
+  }
+
+  function oBack(step) {
+    if (step === 2) {
+      document.getElementById('oFormStep2').style.display = 'none';
+      document.getElementById('oFormStep1').style.display = 'block';
+      document.getElementById('step2').classList.remove('done');
+    } else if (step === 3) {
+      document.getElementById('oFormStep3').style.display = 'none';
+      document.getElementById('oFormStep2').style.display = 'block';
+      document.getElementById('step3').classList.remove('done');
+    }
+  }
+
+  function selectCat(el, cat) {
+    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedCategory = cat;
+  }
+
+  function oSubmit() {
+    const agree = document.getElementById('oAgree').checked;
+    if (!agree) { showToast('Please agree to the Privacy Policy to continue.'); return; }
+
+    const regId = 'IYTO-2025-' + Math.random().toString(36).substr(2,8).toUpperCase();
+
+    // Save registration
+    if (currentUser) {
+      currentUser.registration = { ...olympiadData, regId, status: 'pending', date: new Date().toLocaleDateString() };
+      localStorage.setItem('iyto_user', JSON.stringify(currentUser));
+      // Update dashboard
+      const dashText = document.getElementById('dashRegText');
+      dashText.innerHTML = `<span class="status-badge status-pending">⏳ Pending Review</span><br><br>Category: ${olympiadData.category}<br>Reg. ID: ${regId}`;
+    }
+
+    document.getElementById('oFormStep3').style.display = 'none';
+    document.getElementById('oSuccess').style.display = 'block';
+    document.getElementById('oRegId').textContent = `Registration ID: ${regId}`;
+  }
+
+  // ══ INIT ══
+  initAuth();
+  showPage('home');
+</script>
+</body>
+</html>
