@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>IYTO — International Youth Tech Olympiad 2026</title>
+  <meta name="description" content="The world's most prestigious free technology competition for young innovators aged 10–20."/>
+  <link rel="stylesheet" href="/assets/css/global.css"/>
+  <style>
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: var(--nav-h);
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 65% 40%, rgba(37,99,235,0.1) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 20% 70%, rgba(124,58,237,0.08) 0%, transparent 60%);
+      z-index: 0;
+    }
+    .hero-grid-lines {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .hero-meta-divider {
+      width: 1px; height: 18px;
+      background: var(--stroke);
+    }
+    .hero-meta-item {
+      font-size: 0.78rem;
+      color: var(--mist);
+      letter-spacing: 0.05em;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 6vw, 6rem);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--mist);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .hero-right {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+      width: 42%;
+    }
+    .hero-card-stack {
+      position: relative;
+      padding: 2rem;
+    }
+    .floating-card {
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .floating-card-sm {
+      position: absolute;
+      background: var(--raised);
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow-md);
+      font-size: 0.84rem;
+      white-space: nowrap;
+    }
+    .floating-card-sm.card-1 {
+      bottom: 1rem; left: -1rem;
+      animation: float1 4s ease-in-out infinite;
+    }
+    .floating-card-sm.card-2 {
+      top: 0.5rem; right: 0;
+      animation: float2 5s ease-in-out infinite;
+    }
+    @keyframes float1 { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+    @keyframes float2 { 0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);} }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      border-top: 1px solid var(--stroke);
+      border-bottom: 1px solid var(--stroke);
+      background: rgba(10,13,26,0.5);
+    }
+    .stats-inner {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .stat-col {
+      flex: 1;
+      min-width: 140px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-right: 1px solid var(--stroke);
+    }
+    .stat-col:last-child { border-right: none; }
+    .stat-val {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .stat-lbl {
+      font-size: 0.72rem;
+      color: var(--mist);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── CATEGORIES ── */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .cat-card {
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .cat-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--c-from, transparent), var(--c-to, transparent));
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    .cat-card:hover {
+      border-color: var(--c-stroke, rgba(91,164,245,0.3));
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+    .cat-card:hover::after { opacity: 0.05; }
+    .cat-card-inner { position: relative; z-index: 1; }
+    .cat-age-badge {
+      display: inline-block;
+      padding: 0.3rem 0.85rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+    }
+    .cat-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .cat-name {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      color: var(--white);
+      margin-bottom: 0.35rem;
+    }
+    .cat-level { font-size: 0.78rem; color: var(--mist); margin-bottom: 0.75rem; }
+    .cat-desc { font-size: 0.85rem; color: var(--mist); line-height: 1.65; margin-bottom: 1.25rem; }
+    .cat-rounds {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .cat-round-pill {
+      font-size: 0.7rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--stroke);
+      border-radius: 100px;
+      padding: 0.22rem 0.65rem;
+      color: var(--mist);
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--stroke), var(--stroke), transparent);
+    }
+    .step-item { text-align: center; position: relative; }
+    .step-num {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--raised);
+      border: 1px solid var(--stroke);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-family: var(--mono);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--sky);
+      position: relative;
+      z-index: 1;
+    }
+    .step-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .step-desc { font-size: 0.82rem; color: var(--mist); line-height: 1.65; }
+
+    /* ── SCORING ── */
+    .scoring-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+    .scoring-table thead tr {
+      border-bottom: 1px solid var(--stroke);
+    }
+    .scoring-table th {
+      text-align: left;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--slate);
+    }
+    .scoring-table td {
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      color: var(--fog);
+      border-bottom: 1px solid var(--stroke2);
+    }
+    .scoring-table tr:last-child td { border-bottom: none; }
+    .scoring-table .pass-score {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--white);
+      font-weight: 400;
+    }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(124,58,237,0.06));
+      border-top: 1px solid rgba(37,99,235,0.15);
+      border-bottom: 1px solid rgba(37,99,235,0.15);
+      text-align: center;
+      padding: 6rem 0;
+    }
+
+    @media (max-width: 960px) {
+      .hero-right { display: none; }
+      .cat-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .steps-grid::before { display: none; }
+    }
+    @media (max-width: 640px) {
+      .steps-grid { grid-template-columns: 1fr; }
+      .stats-inner { flex-direction: column; }
+      .stat-col { border-right: none; border-bottom: 1px solid var(--stroke); }
+    }
+  </style>
+</head>
+<body>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="/assets/js/firebase-config.js"></script>
+<script src="/assets/js/components.js"></script>
+<script>
+  renderNavbar('home');
+</script>
+
+<!-- ════════════ HERO ════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="container" style="position:relative;z-index:1;width:100%;">
+    <div class="hero-content">
+      <div class="hero-meta">
+        <div class="badge badge-blue"><div class="pulse-dot"></div>2026 Season Open</div>
+        <div class="hero-meta-divider"></div>
+        <span class="hero-meta-item">No registration deadline</span>
+        <div class="hero-meta-divider"></div>
+        <span class="hero-meta-item">100% Free</span>
+      </div>
+      <h1 class="hero-title">
+        Where Young<br>
+        Minds Become<br>
+        <em>Tech Champions</em>
+      </h1>
+      <p class="hero-desc">
+        The International Youth Tech Olympiad is the world's most prestigious free competition for young innovators aged 10–20. Compete globally, earn your certificate, and prove your brilliance.
+      </p>
+      <div class="hero-cta">
+        <a href="/register.html" class="btn btn-primary btn-lg">Join the Olympiad — Free</a>
+        <a href="/about.html" class="btn btn-outline btn-lg">Learn More</a>
+      </div>
+    </div>
+
+    <!-- Decorative floating cards -->
+    <div class="hero-right">
+      <div class="hero-card-stack">
+        <div class="floating-card">
+          <div class="eyebrow" style="margin-bottom:0.75rem;">Live Scoreboard</div>
+          <div style="display:flex;flex-direction:column;gap:0.6rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0.8rem;background:var(--raised);border-radius:8px;">
+              <span style="font-size:0.82rem;color:var(--fog);">🇧🇩 Participant #1284</span>
+              <span style="font-family:var(--mono);font-size:0.8rem;color:var(--jade);">38/40</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0.8rem;background:var(--raised);border-radius:8px;">
+              <span style="font-size:0.82rem;color:var(--fog);">🇮🇳 Participant #0891</span>
+              <span style="font-family:var(--mono);font-size:0.8rem;color:var(--jade);">37/40</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem 0.8rem;background:var(--raised);border-radius:8px;">
+              <span style="font-size:0.82rem;color:var(--fog);">🇵🇰 Participant #2047</span>
+              <span style="font-family:var(--mono);font-size:0.8rem;color:var(--sky);">35/40</span>
+            </div>
+          </div>
+        </div>
+        <div class="floating-card-sm card-1">
+          <span style="font-size:1.1rem;">🏆</span> &nbsp;
+          <strong style="color:var(--white);font-size:0.84rem;">Certificate Earned!</strong>
+          <span style="color:var(--mist);font-size:0.75rem;display:block;margin-top:2px;">Final Round · Score 38+</span>
+        </div>
+        <div class="floating-card-sm card-2">
+          <span style="color:var(--jade);font-weight:600;font-size:0.82rem;">✓ Qualified</span>
+          <span style="color:var(--mist);font-size:0.75rem;display:block;">Round 2 → Round 3</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ STATS ════════════ -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-col"><div class="stat-val">50+</div><div class="stat-lbl">Countries</div></div>
+    <div class="stat-col"><div class="stat-val">10K+</div><div class="stat-lbl">Youth Registered</div></div>
+    <div class="stat-col"><div class="stat-val">3</div><div class="stat-lbl">Age Groups</div></div>
+    <div class="stat-col"><div class="stat-val">100%</div><div class="stat-lbl">Free Forever</div></div>
+    <div class="stat-col"><div class="stat-val">∞</div><div class="stat-lbl">No Deadline</div></div>
+  </div>
+</div>
+
+<!-- ════════════ CATEGORIES ════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">Age Groups</div>
+    <h2 class="heading-lg">Three Levels of <em style="font-style:italic;">Competition</em></h2>
+    <p style="color:var(--mist);margin-top:1rem;max-width:540px;line-height:1.8;">
+      After signing up, your age group is automatically determined. Questions are crafted specifically for your level — never too easy, never unfair.
+    </p>
+    <div class="cat-grid">
+      <a href="/olympiad.html" class="cat-card" style="--c-from:#10b981;--c-to:#2563eb;--c-stroke:rgba(16,185,129,0.3);">
+        <div class="cat-card-inner">
+          <span class="cat-age-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.25);">Ages 10–12</span>
+          <div class="cat-icon">🌱</div>
+          <div class="cat-name">Junior Pioneer</div>
+          <div class="cat-level">Beginner · Foundational Questions</div>
+          <p class="cat-desc">Perfect for young minds starting their tech journey. Questions cover computing basics, internet safety, and digital literacy.</p>
+          <div class="cat-rounds">
+            <span class="cat-round-pill">R1: 30Q / 20min</span>
+            <span class="cat-round-pill">R2: 20Q / 8min</span>
+            <span class="cat-round-pill">R3: 20Q / 6min</span>
+          </div>
+        </div>
+      </a>
+      <a href="/olympiad.html" class="cat-card" style="--c-from:#2563eb;--c-to:#7c3aed;--c-stroke:rgba(91,164,245,0.3);">
+        <div class="cat-card-inner">
+          <span class="cat-age-badge" style="background:rgba(91,164,245,0.12);color:#5ba4f5;border:1px solid rgba(91,164,245,0.25);">Ages 13–16</span>
+          <div class="cat-icon">⚙️</div>
+          <div class="cat-name">Tech Explorer</div>
+          <div class="cat-level">Intermediate · Applied Knowledge</div>
+          <p class="cat-desc">Tests problem-solving, logical thinking and applied tech knowledge including algorithms, programming concepts and systems.</p>
+          <div class="cat-rounds">
+            <span class="cat-round-pill">R1: 30Q / 20min</span>
+            <span class="cat-round-pill">R2: 20Q / 8min</span>
+            <span class="cat-round-pill">R3: 20Q / 6min</span>
+          </div>
+        </div>
+      </a>
+      <a href="/olympiad.html" class="cat-card" style="--c-from:#7c3aed;--c-to:#f43f5e;--c-stroke:rgba(167,139,250,0.3);">
+        <div class="cat-card-inner">
+          <span class="cat-age-badge" style="background:rgba(167,139,250,0.12);color:#a78bfa;border:1px solid rgba(167,139,250,0.25);">Ages 17–20</span>
+          <div class="cat-icon">🔥</div>
+          <div class="cat-name">Elite Innovator</div>
+          <div class="cat-level">Advanced · Expert-Level</div>
+          <p class="cat-desc">University-level challenges demanding deep technical understanding, advanced algorithms, system design, and creative thinking under pressure.</p>
+          <div class="cat-rounds">
+            <span class="cat-round-pill">R1: 30Q / 20min</span>
+            <span class="cat-round-pill">R2: 20Q / 8min</span>
+            <span class="cat-round-pill">R3: 20Q / 6min</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ HOW IT WORKS ════════════ -->
+<div style="background:rgba(10,13,26,0.5);border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);">
+  <div class="container section">
+    <div class="eyebrow">Process</div>
+    <h2 class="heading-lg">How to Compete</h2>
+    <div class="steps-grid">
+      <div class="step-item"><div class="step-num">01</div><div class="step-title">Create Free Account</div><p class="step-desc">Sign up with email or Google. Your age group is assigned automatically. No fees, ever.</p></div>
+      <div class="step-item"><div class="step-num">02</div><div class="step-title">Register for Olympiad</div><p class="step-desc">Complete your registration form with personal details. Participate anytime in 2026.</p></div>
+      <div class="step-item"><div class="step-num">03</div><div class="step-title">Take the Rounds</div><p class="step-desc">30 MCQ in 20 min → 20 MCQ in 8 min → 20 MCQ in 6 min. Score must cross each threshold.</p></div>
+      <div class="step-item"><div class="step-num">04</div><div class="step-title">Get Certified</div><p class="step-desc">Score 38+ in Round 3? Download your official PDF certificate signed by Fahim Sikder instantly.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SCORING ════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">Qualification Rules</div>
+    <h2 class="heading-lg">Score to Advance</h2>
+    <p style="color:var(--mist);margin-top:0.75rem;margin-bottom:0;font-size:0.9rem;">
+      MCQ only. Answers are never revealed — only your final score. Compete with integrity.
+    </p>
+    <div class="card" style="margin-top:2.5rem;padding:0;overflow:hidden;">
+      <table class="scoring-table">
+        <thead>
+          <tr>
+            <th>Round</th>
+            <th>Questions</th>
+            <th>Time Limit</th>
+            <th>Pass Score</th>
+            <th>Unlocks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--white);">Round 1 — Qualification</strong></td>
+            <td>30 MCQ</td>
+            <td>20 minutes</td>
+            <td><span class="pass-score">30+</span></td>
+            <td><span class="badge badge-blue">Round 2</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--white);">Round 2 — Semi-Final</strong></td>
+            <td>20 MCQ</td>
+            <td>8 minutes</td>
+            <td><span class="pass-score">34+</span></td>
+            <td><span class="badge badge-violet">Round 3 Final</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--white);">Round 3 — Grand Final</strong></td>
+            <td>20 MCQ</td>
+            <td>6 minutes</td>
+            <td><span class="pass-score">38+</span></td>
+            <td><span class="badge badge-amber">🏆 Certificate</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--slate);font-size:0.8rem;margin-top:1rem;">
+      * Each participant competes in the round corresponding to their age group difficulty level. Questions adapt automatically.
+    </p>
+  </div>
+</section>
+
+<!-- ════════════ CTA ════════════ -->
+<div class="cta-section">
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center;">Get Started</div>
+    <h2 class="heading-lg" style="text-align:center;margin-bottom:1rem;">Ready to Compete?</h2>
+    <p style="color:var(--mist);text-align:center;max-width:480px;margin:0 auto 2.5rem;line-height:1.8;">
+      Free. No deadline. Open to all youth aged 10–20 worldwide. Create your account and start your journey.
+    </p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="/register.html" class="btn btn-primary btn-lg">Register Now — Free</a>
+      <a href="https://www.facebook.com/share/1CaQfMEmCt/" target="_blank" class="btn btn-ghost btn-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#5ba4f5"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Follow on Facebook
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  renderFooter();
+  initNavAuth();
+</script>
+
+</body>
+</html>
