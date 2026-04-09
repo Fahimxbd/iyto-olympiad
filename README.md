@@ -1,180 +1,283 @@
-# 🌐 International Youth Tech Olympiad (IYTO)
-### Official Website — [iyto.online](https://iyto.online)
+# IYTO — International Youth Tech Olympiad
+## Complete Setup Guide for GitHub Pages + Firebase
 
 ---
 
-## 📌 Overview
-
-This is the official website for the **International Youth Tech Olympiad (IYTO)** — a global platform for young tech innovators to compete, collaborate, and shine.
-
-The site includes:
-- 🏠 Landing / Home Page
-- 📋 Olympiad Registration Page
-- 🔐 Login & Registration System (Firebase Auth)
-- 👤 Participant Dashboard (after login)
-- ℹ️ About Us Page
-- 🔒 Privacy Policy Page
-- 📬 Contact Page
-
----
-
-## 🗂️ Project Structure
+## 📁 File Structure
 
 ```
-iyto-website/
+iyto/                          ← Upload ALL of this to GitHub
 │
-├── index.html              ← Home / Landing Page
-├── register.html           ← Olympiad Registration Form
-├── login.html              ← Login Page
-├── signup.html             ← New User Sign Up
-├── dashboard.html          ← Participant Dashboard (protected)
-├── about.html              ← About Us
-├── privacy.html            ← Privacy Policy
-├── contact.html            ← Contact Page
+├── index.html                 → iyto.online/
+├── login.html                 → iyto.online/login.html
+├── register.html              → iyto.online/register.html
+├── forgot-password.html       → iyto.online/forgot-password.html
+├── dashboard.html             → iyto.online/dashboard.html
+├── olympiad.html              → iyto.online/olympiad.html
+├── practice.html              → iyto.online/practice.html
+├── about.html                 → iyto.online/about.html
+├── contact.html               → iyto.online/contact.html
+├── privacy.html               → iyto.online/privacy.html
+├── terms.html                 → iyto.online/terms.html
 │
-├── assets/
-│   ├── css/
-│   │   └── style.css       ← Global Styles
-│   ├── js/
-│   │   ├── auth.js         ← Firebase Auth Logic
-│   │   └── main.js         ← General Scripts
-│   └── images/
-│       └── logo.png        ← IYTO Logo
-│
-├── firebase.js             ← Firebase Config
-└── README.md               ← This file
+└── assets/
+    ├── css/
+    │   └── global.css
+    └── js/
+        ├── firebase-config.js   ← PUT YOUR FIREBASE KEYS HERE
+        └── components.js
 ```
 
 ---
 
-## 🚀 How to Run Locally
+## 🔥 STEP 1 — Set Up Firebase
 
-### 1. Clone the Repository
+### 1.1 Create Firebase Project
+1. Go to **https://console.firebase.google.com**
+2. Click **"Add Project"** → Name it `iyto-2026`
+3. Disable Google Analytics (optional) → **Create Project**
 
-```bash
-git clone https://github.com/YOUR_USERNAME/iyto-website.git
-cd iyto-website
-```
+### 1.2 Register a Web App
+1. In your project → click the **`</>`** (Web) icon
+2. App nickname: `IYTO Website`
+3. ✅ Check **"Also set up Firebase Hosting"** (optional)
+4. Click **Register app**
+5. **Copy the config object** — it looks like this:
 
-### 2. Open with Live Server
-
-Install the **Live Server** extension in VS Code, then right-click `index.html` → **Open with Live Server**.
-
-Or simply open `index.html` in your browser directly.
-
----
-
-## 🔐 Login & Registration Setup (Firebase)
-
-This website uses **Google Firebase Authentication** for real login/registration.
-
-### Step 1: Create a Firebase Project
-
-1. Go to [https://console.firebase.google.com](https://console.firebase.google.com)
-2. Click **"Add Project"** → Name it `IYTO`
-3. Disable Google Analytics (optional) → Click **Create Project**
-
-### Step 2: Enable Email/Password Authentication
-
-1. In Firebase Console → **Authentication** → **Sign-in method**
-2. Enable **Email/Password**
-3. Click **Save**
-
-### Step 3: Get Your Firebase Config
-
-1. Go to **Project Settings** (gear icon)
-2. Scroll to **"Your apps"** → Click `</>` (Web)
-3. Register app → Copy the config object
-
-### Step 4: Add Config to `firebase.js`
-
-Open `firebase.js` and replace the placeholder:
-
-```javascript
-// firebase.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
+```js
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey:            "AIzaSy...",
+  authDomain:        "iyto-2026.firebaseapp.com",
+  projectId:         "iyto-2026",
+  storageBucket:     "iyto-2026.appspot.com",
+  messagingSenderId: "12345678",
+  appId:             "1:12345678:web:abc123"
 };
-
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
 ```
 
-> ⚠️ **Never share your API key publicly.** For GitHub Pages, Firebase rules will protect your data.
+### 1.3 Paste Config into firebase-config.js
+Open `assets/js/firebase-config.js` and replace:
+```js
+const firebaseConfig = {
+  apiKey:            "YOUR_API_KEY",          // ← paste yours
+  authDomain:        "YOUR_PROJECT...",
+  ...
+};
+```
 
-### Step 5: Set Firebase Rules (Firestore)
+---
 
-If you use Firestore to store registrations:
+## 🔐 STEP 2 — Enable Authentication
+
+In Firebase Console → **Authentication** → **Sign-in method**:
+
+| Provider | Action |
+|----------|--------|
+| **Email/Password** | Enable → Save |
+| **Google** | Enable → Add your support email → Save |
+
+### 2.1 Add Authorized Domain for Google Sign-In
+Go to: **Authentication** → **Settings** → **Authorized domains**
+
+Add:
+- `iyto.online`
+- `www.iyto.online`
+- `YOUR_GITHUB_USERNAME.github.io`
+
+> ⚠️ Without this, Google Sign-In will fail with "unauthorized domain" error.
+
+---
+
+## 🗄️ STEP 3 — Set Up Firestore Database
+
+1. Firebase Console → **Firestore Database** → **Create database**
+2. Choose **Production mode**
+3. Select your region → **Enable**
+
+### 3.1 Set Security Rules
+Go to **Firestore** → **Rules** tab → Replace with:
 
 ```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /registrations/{doc} {
-      allow read, write: if request.auth != null;
+
+    // Users can read/write their own profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Anyone can submit a contact message
+    match /contact_messages/{doc} {
+      allow create: if true;
+      allow read: if false; // only you see these in Firebase Console
     }
   }
 }
 ```
 
+Click **Publish**.
+
 ---
 
-## 🌍 Deploy on GitHub Pages
+## 💾 STEP 4 — Enable Firebase Storage (for profile pictures)
 
-### Step 1: Push to GitHub
+1. Firebase Console → **Storage** → **Get Started**
+2. Choose **Production mode** → your region → **Done**
 
+### Storage Rules:
+Go to **Storage** → **Rules** tab:
+
+```
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /avatars/{userId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
+
+Click **Publish**.
+
+---
+
+## 🐙 STEP 5 — Deploy to GitHub Pages
+
+### 5.1 Create GitHub Repository
+1. Go to **github.com** → **New repository**
+2. Name: `iyto-website` (or anything)
+3. Set to **Public**
+4. Click **Create repository**
+
+### 5.2 Upload Files
+**Option A — GitHub Website (easiest):**
+1. Open your repo → click **"uploading an existing file"**
+2. Drag the entire `iyto/` folder contents
+3. Click **Commit changes**
+
+**Option B — Git CLI:**
 ```bash
+git clone https://github.com/YOUR_USERNAME/iyto-website
+cd iyto-website
+# Copy all files from iyto/ folder into here
 git add .
-git commit -m "Initial IYTO website commit"
+git commit -m "Initial IYTO website"
 git push origin main
 ```
 
-### Step 2: Enable GitHub Pages
-
-1. Go to your repo on GitHub
-2. **Settings** → **Pages**
-3. Source: **Deploy from branch** → `main` → `/ (root)`
-4. Click **Save**
-
-Your site will be live at:
-```
-https://YOUR_USERNAME.github.io/iyto-website/
-```
-
-### Step 3: Connect Custom Domain (`iyto.online`)
-
-1. In GitHub Pages settings → **Custom domain** → Enter `iyto.online`
-2. Go to your domain registrar (where you bought `iyto.online`)
-3. Add these DNS records:
-
-| Type  | Name | Value                        |
-|-------|------|------------------------------|
-| A     | @    | 185.199.108.153              |
-| A     | @    | 185.199.109.153              |
-| A     | @    | 185.199.110.153              |
-| A     | @    | 185.199.111.153              |
-| CNAME | www  | YOUR_USERNAME.github.io      |
-
-4. Wait 10–48 hours for DNS propagation
-5. Check **Enforce HTTPS** in GitHub Pages settings
+### 5.3 Enable GitHub Pages
+1. Repo → **Settings** → **Pages** (left sidebar)
+2. **Source**: `Deploy from a branch`
+3. **Branch**: `main` → `/ (root)` → **Save**
+4. Wait 2–3 minutes
+5. Your site: `https://YOUR_USERNAME.github.io/iyto-website/`
 
 ---
 
-## 📧 Contact
+## 🌐 STEP 6 — Connect iyto.online Domain
 
-- 🌐 Website: [iyto.online](https://iyto.online)
-- 📧 Email: [iyto.official@hotmail.com](mailto:iyto.official@hotmail.com)
+### 6.1 GitHub Pages Custom Domain
+1. Repo → **Settings** → **Pages** → **Custom domain**
+2. Type: `iyto.online` → **Save**
+3. ✅ Check **Enforce HTTPS**
+
+### 6.2 DNS Records (in your domain registrar)
+Add these records where you bought `iyto.online`:
+
+**A Records (for root domain):**
+| Type | Name | Value |
+|------|------|-------|
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.110.153 |
+| A | @ | 185.199.111.153 |
+
+**CNAME Record (for www):**
+| Type | Name | Value |
+|------|------|-------|
+| CNAME | www | YOUR_USERNAME.github.io |
+
+> ⏳ DNS changes take 10 minutes to 48 hours to propagate.
 
 ---
 
-## 📄 License
+## ✅ STEP 7 — Test Everything
 
-© 2025 International Youth Tech Olympiad (IYTO). All rights reserved.
+After setup, verify:
+
+| URL | Should work |
+|-----|-------------|
+| `iyto.online` | Homepage |
+| `iyto.online/login.html` | Login page |
+| `iyto.online/register.html` | Registration |
+| `iyto.online/forgot-password.html` | Password reset |
+| `iyto.online/dashboard.html` | Dashboard (login required) |
+| `iyto.online/olympiad.html` | Olympiad registration |
+| `iyto.online/practice.html` | Practice hub |
+| `iyto.online/about.html` | About page |
+| `iyto.online/contact.html` | Contact form |
+| `iyto.online/privacy.html` | Privacy policy |
+
+**Test checklist:**
+- [ ] Email registration works
+- [ ] Google Sign-In works
+- [ ] Forgot password sends email
+- [ ] Profile picture upload works
+- [ ] Contact form saves to Firestore
+- [ ] Dashboard shows user data
+
+---
+
+## 📧 STEP 8 — Contact Form Messages
+
+To read contact form submissions:
+1. Firebase Console → **Firestore Database**
+2. Click `contact_messages` collection
+3. All messages appear here with name, email, subject, message, and timestamp
+
+You can also set up **Firebase email alerts** for new messages using **Firebase Extensions** → "Trigger Email".
+
+---
+
+## 🔒 STEP 9 — Add Your Signature to Certificates
+
+The certificate PDF is generated in `dashboard.html`.
+
+To add your actual signature image:
+1. Sign on white paper, photograph it, remove background (use remove.bg)
+2. Save as `signature.png` in `assets/images/`
+3. In `dashboard.html`, find the certificate generation code
+4. Replace the text-based signature with:
+```js
+const img = new Image();
+img.src = '/assets/images/signature.png';
+doc.addImage(img, 'PNG', W/2 - 40, 148, 80, 20);
+```
+
+---
+
+## 📞 Contact Info Used in Site
+
+- **Email:** iyto.official@hotmail.com
+- **Website:** iyto.online
+- **Facebook:** https://www.facebook.com/share/1CaQfMEmCt/
+- **Founder:** Fahim Sikder — https://www.aibyfahim.com
+
+---
+
+## 🆘 Common Issues
+
+| Problem | Solution |
+|---------|----------|
+| Google Sign-In fails | Add your domain to Firebase Auth → Authorized Domains |
+| CSS not loading | Make sure paths start with `/` not `./` |
+| 404 on GitHub Pages | GitHub Pages serves from root — keep all files at root level |
+| Firebase not connecting | Double-check all 6 values in `firebase-config.js` |
+| Contact form not saving | Check Firestore security rules |
+
+---
+
+*© 2026 International Youth Tech Olympiad · iyto.official@hotmail.com*
