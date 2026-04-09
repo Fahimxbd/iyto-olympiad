@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IYTO — International Youth Tech Olympiad 2026</title>
+<meta name="description" content="The world's most prestigious free technology competition for youth aged 10–20.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#05070f;--s1:#080c1a;--s2:#0d1228;--s3:#111830;--card:#141c30;
+  --b1:rgba(255,255,255,0.06);--b2:rgba(255,255,255,0.03);
+  --blue:#3b82f6;--indigo:#6366f1;--violet:#8b5cf6;--cyan:#06b6d4;
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;
+  --w:#f8fafc;--g1:#94a3b8;--g2:#64748b;--g3:#334155;
+  --grad:linear-gradient(135deg,#3b82f6,#8b5cf6);
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--g1);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+/* BG EFFECTS */
+body::before{content:'';position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse 900px 700px at 75% 30%,rgba(59,130,246,.07),transparent),
+             radial-gradient(ellipse 600px 500px at 10% 80%,rgba(139,92,246,.05),transparent);
+  pointer-events:none}
+body::after{content:'';position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
+  pointer-events:none}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:68px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;
+  background:rgba(5,7,15,.8);backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid var(--b1)}
+.nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer}
+.nav-logo-icon{width:40px;height:40px;border-radius:10px;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  box-shadow:0 0 20px rgba(59,130,246,.4)}
+.nav-logo-icon::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25),transparent)}
+.nav-logo-icon span{font-family:var(--serif);font-style:italic;font-size:1.1rem;color:#fff;font-weight:700;position:relative;z-index:1}
+.nav-logo-words{display:flex;flex-direction:column;gap:1px}
+.nav-logo-name{font-family:var(--sans);font-weight:800;font-size:.95rem;letter-spacing:.1em;color:var(--w);line-height:1}
+.nav-logo-sub{font-size:.58rem;color:var(--g2);letter-spacing:.08em}
+.nav-links{display:flex;gap:.15rem;list-style:none}
+.nav-links a{display:block;padding:.45rem .85rem;border-radius:8px;font-size:.84rem;font-weight:500;color:var(--g1);transition:all .2s}
+.nav-links a:hover,.nav-links a.on{color:var(--w);background:rgba(255,255,255,.06)}
+.nav-r{display:flex;gap:.65rem;align-items:center}
+.btn-nav-out{padding:.48rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:600;color:var(--g1);border:1px solid var(--b1);background:transparent;cursor:pointer;transition:all .2s;font-family:var(--sans)}
+.btn-nav-out:hover{color:var(--w);border-color:rgba(59,130,246,.4);background:rgba(59,130,246,.06)}
+.btn-nav-pri{padding:.48rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;color:#fff;background:var(--grad);border:none;cursor:pointer;box-shadow:0 0 16px rgba(59,130,246,.35);transition:all .2s;font-family:var(--sans)}
+.btn-nav-pri:hover{transform:translateY(-1px);box-shadow:0 0 24px rgba(59,130,246,.5)}
+#nav-user{display:none;align-items:center;gap:.75rem}
+.nav-u-name{font-size:.82rem;font-weight:600;color:var(--blue)}
+.nav-u-av{width:34px;height:34px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:#fff;overflow:hidden;border:2px solid rgba(59,130,246,.3);cursor:pointer}
+.nav-u-av img{width:100%;height:100%;object-fit:cover}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:68px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle,rgba(59,130,246,.1),rgba(139,92,246,.07),transparent 70%);
+  top:50%;left:55%;transform:translate(-50%,-55%);pointer-events:none;
+  animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:translate(-50%,-55%) scale(1)}50%{transform:translate(-50%,-55%) scale(1.08)}}
+.hero-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 2.5rem;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-pill{display:inline-flex;align-items:center;gap:.55rem;padding:.4rem 1rem;
+  background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:100px;
+  font-size:.72rem;font-weight:700;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.75rem}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:var(--serif);font-size:clamp(2.8rem,5.5vw,5.2rem);font-weight:900;line-height:1.04;letter-spacing:-.02em;color:var(--w);margin-bottom:1.5rem}
+.hero-title em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:1.05rem;color:var(--g1);line-height:1.82;max-width:520px;margin-bottom:2.5rem}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 1.9rem;border-radius:10px;font-size:.9rem;font-weight:700;color:#fff;background:var(--grad);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(59,130,246,.35);transition:all .3s;font-family:var(--sans);text-decoration:none}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(59,130,246,.5)}
+.btn-outline{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 1.9rem;border-radius:10px;font-size:.9rem;font-weight:600;color:var(--g1);background:transparent;border:1px solid var(--b1);cursor:pointer;transition:all .3s;font-family:var(--sans);text-decoration:none}
+.btn-outline:hover{color:var(--w);border-color:rgba(59,130,246,.4);background:rgba(59,130,246,.06)}
+
+/* HERO RIGHT — Visual */
+.hero-visual{position:relative}
+.hv-card{background:var(--card);border:1px solid var(--b1);border-radius:16px;padding:1.5rem;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.hv-card-title{font-size:.72rem;font-weight:700;color:var(--g2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.hv-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem .85rem;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:.5rem;font-size:.82rem}
+.hv-row-flag{display:flex;align-items:center;gap:.6rem;color:var(--g1)}
+.hv-score{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.hv-cert{position:absolute;bottom:-1.5rem;left:-1.5rem;background:var(--s2);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:.85rem 1.1rem;box-shadow:0 12px 32px rgba(0,0,0,.4);animation:float1 4s ease-in-out infinite;white-space:nowrap}
+.hv-cert-top{font-size:.78rem;font-weight:700;color:var(--green);display:flex;align-items:center;gap:.4rem}
+.hv-cert-sub{font-size:.7rem;color:var(--g2);margin-top:.2rem}
+.hv-live{position:absolute;top:-1rem;right:-1rem;background:var(--s2);border:1px solid rgba(59,130,246,.25);border-radius:10px;padding:.65rem .9rem;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:float2 5s ease-in-out infinite;font-size:.78rem}
+.hv-live-val{font-weight:700;color:var(--w)}
+.hv-live-lbl{font-size:.68rem;color:var(--g2);margin-top:.15rem}
+@keyframes float1{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* STATS */
+.stats-row{border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);background:rgba(8,12,26,.5)}
+.stats-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap}
+.stat{flex:1;min-width:140px;padding:2.5rem 2rem;text-align:center;border-right:1px solid var(--b1)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:var(--serif);font-size:2.6rem;font-weight:900;color:var(--w);line-height:1;margin-bottom:.3rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-l{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--g2)}
+
+/* SECTIONS */
+.sec{padding:7rem 2.5rem;max-width:1200px;margin:0 auto}
+.sec-stripe{background:rgba(8,12,26,.5);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1)}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:.85rem}
+.eyebrow::before{content:'';width:18px;height:1.5px;background:var(--blue)}
+.sec-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:var(--w);line-height:1.1;letter-spacing:-.02em;margin-bottom:.75rem}
+.sec-sub{font-size:.95rem;color:var(--g1);line-height:1.82;max-width:540px}
+
+/* AGE CARDS */
+.age-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.age-card{background:var(--card);border:1px solid var(--b1);border-radius:18px;padding:2rem;position:relative;overflow:hidden;transition:all .35s;text-decoration:none;display:block}
+.age-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--ca),var(--cb));opacity:0;transition:opacity .35s}
+.age-card:hover{transform:translateY(-6px);border-color:var(--cc);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.age-card:hover::before{opacity:.06}
+.age-card-in{position:relative;z-index:1}
+.age-lbl{display:inline-block;padding:.28rem .75rem;border-radius:100px;font-size:.68rem;font-weight:700;letter-spacing:.05em;margin-bottom:1.25rem}
+.age-icon{font-size:2.2rem;margin-bottom:.85rem}
+.age-name{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--w);margin-bottom:.3rem}
+.age-level{font-size:.78rem;color:var(--g2);margin-bottom:.75rem}
+.age-desc{font-size:.84rem;color:var(--g1);line-height:1.65;margin-bottom:1.25rem}
+.age-pills{display:flex;gap:.4rem;flex-wrap:wrap}
+.age-pill{font-size:.68rem;padding:.22rem .6rem;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid var(--b1);color:var(--g2)}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:3rem;position:relative}
+.steps::before{content:'';position:absolute;top:27px;left:calc(12.5% + 14px);right:calc(12.5% + 14px);height:1px;background:linear-gradient(90deg,transparent,var(--b1) 20%,var(--b1) 80%,transparent)}
+.step{text-align:center;position:relative}
+.step-n{width:56px;height:56px;border-radius:50%;background:var(--s2);border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-family:var(--mono);font-size:.9rem;font-weight:600;color:var(--blue);position:relative;z-index:1}
+.step-t{font-weight:700;font-size:.9rem;color:var(--w);margin-bottom:.5rem}
+.step-d{font-size:.82rem;color:var(--g1);line-height:1.65}
+
+/* SCORING TABLE */
+.score-table{width:100%;border-collapse:collapse;margin-top:2rem}
+.score-table thead tr{border-bottom:1px solid var(--b1)}
+.score-table th{text-align:left;padding:.75rem 1.25rem;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g2)}
+.score-table td{padding:1rem 1.25rem;font-size:.875rem;color:var(--g1);border-bottom:1px solid var(--b2)}
+.score-table tr:last-child td{border-bottom:none}
+.score-table .big{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--w)}
+.score-table tbody tr:hover{background:rgba(255,255,255,.02)}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .7rem;border-radius:100px;font-size:.7rem;font-weight:600}
+.badge-blue{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+.badge-violet{background:rgba(139,92,246,.1);color:#a78bfa;border:1px solid rgba(139,92,246,.2)}
+.badge-amber{background:rgba(245,158,11,.1);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.badge-green{background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2)}
+
+/* CTA BOX */
+.cta-box{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(139,92,246,.06));
+  border:1px solid rgba(59,130,246,.15);border-radius:20px;padding:4rem;text-align:center;margin-top:2rem}
+
+/* FOOTER */
+footer{border-top:1px solid var(--b1);background:rgba(5,7,15,.8);padding:4rem 2.5rem 2rem;position:relative;z-index:1}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand p{font-size:.875rem;color:var(--g2);line-height:1.75;margin-top:.75rem;max-width:260px}
+.footer-col h5{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g1);margin-bottom:.85rem}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:.5rem}
+.footer-col a{font-size:.875rem;color:var(--g2);transition:color .2s}
+.footer-col a:hover{color:var(--w)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid var(--b1);font-size:.78rem;color:var(--g2);flex-wrap:wrap;gap:.5rem}
+.footer-bottom a{color:var(--g2);transition:color .2s}.footer-bottom a:hover{color:var(--g1)}
+
+/* TOASTS */
+#toasts{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.65rem;pointer-events:none}
+.toast{background:var(--s2);border:1px solid var(--b1);border-radius:12px;padding:.85rem 1.2rem;font-size:.85rem;max-width:300px;box-shadow:0 12px 40px rgba(0,0,0,.5);transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:all}
+.toast-success{border-color:rgba(16,185,129,.35);color:#34d399}
+.toast-error{border-color:rgba(239,68,68,.35);color:#f87171}
+.toast-info{border-color:rgba(59,130,246,.35);color:#60a5fa}
+
+@media(max-width:960px){
+  .hero-inner{grid-template-columns:1fr}.hero-visual{display:none}
+  .age-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}
+  .steps::before{display:none}.nav-links{display:none}.footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .steps{grid-template-columns:1fr}.stats-inner{flex-direction:column}
+  .stat{border-right:none;border-bottom:1px solid var(--b1)}.footer-grid{grid-template-columns:1fr}
+  .cta-box{padding:2.5rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon"><span>Iy</span></div>
+    <div class="nav-logo-words">
+      <span class="nav-logo-name">IYTO</span>
+      <span class="nav-logo-sub">iyto.online</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="on">Home</a></li>
+    <li><a href="olympiad.html">Olympiad</a></li>
+    <li><a href="practice.html">Practice</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-r">
+    <div id="nav-auth">
+      <button class="btn-nav-out" onclick="location.href='login.html'">Log in</button>
+      <button class="btn-nav-pri" onclick="location.href='register.html'">Sign up free</button>
+    </div>
+    <div id="nav-user">
+      <span class="nav-u-name" id="nav-uname"></span>
+      <a href="dashboard.html" class="nav-u-av" id="nav-uav">?</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-pill"><div class="hero-dot"></div>2026 Season · Open Year-Round</div>
+      <h1 class="hero-title">Where Young Minds<br>Become <em>Tech Champions</em></h1>
+      <p class="hero-desc">The International Youth Tech Olympiad is the world's most prestigious free technology competition for innovators aged 10–20. Compete globally, earn your certificate, and prove your brilliance.</p>
+      <div class="hero-cta">
+        <a href="register.html" class="btn-primary">Join the Olympiad — Free</a>
+        <a href="about.html" class="btn-outline">Learn More ↓</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hv-card">
+        <div class="hv-card-title">Top Scorers Today</div>
+        <div class="hv-row"><span class="hv-row-flag">🇧🇩 Participant #1284</span><span class="hv-score" style="color:#34d399">38/40 🏆</span></div>
+        <div class="hv-row"><span class="hv-row-flag">🇮🇳 Participant #0891</span><span class="hv-score" style="color:#34d399">37/40</span></div>
+        <div class="hv-row"><span class="hv-row-flag">🇵🇰 Participant #2047</span><span class="hv-score" style="color:#60a5fa">35/40</span></div>
+        <div class="hv-row"><span class="hv-row-flag">🇳🇬 Participant #3312</span><span class="hv-score" style="color:#60a5fa">33/40</span></div>
+      </div>
+      <div class="hv-cert">
+        <div class="hv-cert-top">🏆 Certificate Earned!</div>
+        <div class="hv-cert-sub">Final Round · Score 38+ · Signed by Fahim Sikder</div>
+      </div>
+      <div class="hv-live">
+        <div class="hv-live-val">✓ Qualified</div>
+        <div class="hv-live-lbl">Round 2 → Round 3</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-n">50+</div><div class="stat-l">Countries</div></div>
+    <div class="stat"><div class="stat-n">10K+</div><div class="stat-l">Youth Registered</div></div>
+    <div class="stat"><div class="stat-n">3</div><div class="stat-l">Age Groups</div></div>
+    <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Free Forever</div></div>
+    <div class="stat"><div class="stat-n">∞</div><div class="stat-l">No Deadline</div></div>
+  </div>
+</div>
+
+<!-- AGE CATEGORIES -->
+<div class="sec">
+  <div class="eyebrow">Competition Groups</div>
+  <h2 class="sec-title">Three Age Categories</h2>
+  <p class="sec-sub">Your age group is automatically assigned when you sign up. Questions are crafted for your exact level — never too easy, never unfair.</p>
+  <div class="age-grid">
+    <a href="register.html" class="age-card" style="--ca:#10b981;--cb:#059669;--cc:rgba(16,185,129,.35)">
+      <div class="age-card-in">
+        <span class="age-lbl" style="background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2)">Ages 10–12</span>
+        <div class="age-icon">🌱</div>
+        <div class="age-name">Junior Pioneer</div>
+        <div class="age-level">Beginner · Foundational</div>
+        <p class="age-desc">Computing basics, internet safety, digital literacy. Perfect for young minds beginning their tech journey.</p>
+        <div class="age-pills">
+          <span class="age-pill">R1: 30Q / 20min</span>
+          <span class="age-pill">R2: 20Q / 8min</span>
+          <span class="age-pill">R3: 20Q / 6min</span>
+        </div>
+      </div>
+    </a>
+    <a href="register.html" class="age-card" style="--ca:#3b82f6;--cb:#6366f1;--cc:rgba(99,102,241,.35)">
+      <div class="age-card-in">
+        <span class="age-lbl" style="background:rgba(99,102,241,.1);color:#818cf8;border:1px solid rgba(99,102,241,.2)">Ages 13–16</span>
+        <div class="age-icon">⚙️</div>
+        <div class="age-name">Tech Explorer</div>
+        <div class="age-level">Intermediate · Applied Knowledge</div>
+        <p class="age-desc">Algorithms, programming concepts, data structures and applied systems thinking under timed pressure.</p>
+        <div class="age-pills">
+          <span class="age-pill">R1: 30Q / 20min</span>
+          <span class="age-pill">R2: 20Q / 8min</span>
+          <span class="age-pill">R3: 20Q / 6min</span>
+        </div>
+      </div>
+    </a>
+    <a href="register.html" class="age-card" style="--ca:#8b5cf6;--cb:#ec4899;--cc:rgba(139,92,246,.35)">
+      <div class="age-card-in">
+        <span class="age-lbl" style="background:rgba(139,92,246,.1);color:#c084fc;border:1px solid rgba(139,92,246,.2)">Ages 17–20</span>
+        <div class="age-icon">🔥</div>
+        <div class="age-name">Elite Innovator</div>
+        <div class="age-level">Advanced · Expert-Level</div>
+        <p class="age-desc">University-grade challenges — complex algorithms, system design, distributed computing and creative problem-solving.</p>
+        <div class="age-pills">
+          <span class="age-pill">R1: 30Q / 20min</span>
+          <span class="age-pill">R2: 20Q / 8min</span>
+          <span class="age-pill">R3: 20Q / 6min</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="sec-stripe">
+  <div class="sec">
+    <div class="eyebrow">Process</div>
+    <h2 class="sec-title">How It Works</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n">01</div><div class="step-t">Create Free Account</div><p class="step-d">Sign up with email or Google. Age group assigned automatically. No fees, ever.</p></div>
+      <div class="step"><div class="step-n">02</div><div class="step-t">Register for Olympiad</div><p class="step-d">Complete your profile. Participate anytime in 2026 — no closing deadline.</p></div>
+      <div class="step"><div class="step-n">03</div><div class="step-t">Take the Three Rounds</div><p class="step-d">MCQ only. Clock visible. Must hit the pass score for each round to advance.</p></div>
+      <div class="step"><div class="step-n">04</div><div class="step-t">Get Certified</div><p class="step-d">Score 38+ in Round 3? Instant PDF certificate signed by Fahim Sikder.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCORING -->
+<div class="sec">
+  <div class="eyebrow">Qualification Rules</div>
+  <h2 class="sec-title">Score to Advance</h2>
+  <p class="sec-sub">All questions are MCQ. Answers are never shown — only your score. Compete with honesty.</p>
+  <div style="background:var(--card);border:1px solid var(--b1);border-radius:16px;overflow:hidden;margin-top:2.5rem">
+    <table class="score-table">
+      <thead><tr>
+        <th>Round</th><th>Questions</th><th>Time Limit</th><th>Pass Score</th><th>Unlocks</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong style="color:var(--w)">Round 1 — Qualification</strong></td><td>30 MCQ</td><td>20 minutes</td><td><span class="big">30+</span></td><td><span class="badge badge-blue">Round 2</span></td></tr>
+        <tr><td><strong style="color:var(--w)">Round 2 — Semi-Final</strong></td><td>20 MCQ</td><td>8 minutes</td><td><span class="big">34+</span></td><td><span class="badge badge-violet">Round 3 Final</span></td></tr>
+        <tr><td><strong style="color:var(--w)">Round 3 — Grand Final</strong></td><td>20 MCQ</td><td>6 minutes</td><td><span class="big">38+</span></td><td><span class="badge badge-amber">🏆 Certificate</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.78rem;color:var(--g2);margin-top:1rem">* Questions are calibrated to each age group's difficulty level automatically.</p>
+</div>
+
+<!-- CERTIFICATE -->
+<div class="sec-stripe">
+  <div class="sec">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div>
+        <div class="eyebrow">Official Recognition</div>
+        <h2 class="sec-title">Earn Your Certificate</h2>
+        <p style="color:var(--g1);line-height:1.82;margin-bottom:1.75rem">Score 38 or more in the Grand Final and receive an official IYTO Certificate of Excellence — a signed PDF you can share with schools, universities, and employers worldwide.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.75rem">
+          <li style="display:flex;gap:.85rem;align-items:flex-start;font-size:.875rem;color:var(--g1)"><span style="color:var(--green);font-size:1rem;margin-top:.05rem">✓</span> Your full name and date of birth</li>
+          <li style="display:flex;gap:.85rem;align-items:flex-start;font-size:.875rem;color:var(--g1)"><span style="color:var(--green);font-size:1rem;margin-top:.05rem">✓</span> Competition category and score</li>
+          <li style="display:flex;gap:.85rem;align-items:flex-start;font-size:.875rem;color:var(--g1)"><span style="color:var(--green);font-size:1rem;margin-top:.05rem">✓</span> Date of issuance</li>
+          <li style="display:flex;gap:.85rem;align-items:flex-start;font-size:.875rem;color:var(--g1)"><span style="color:var(--green);font-size:1rem;margin-top:.05rem">✓</span> Signed by Fahim Sikder, Founder of IYTO</li>
+          <li style="display:flex;gap:.85rem;align-items:flex-start;font-size:.875rem;color:var(--g1)"><span style="color:var(--green);font-size:1rem;margin-top:.05rem">✓</span> Unique verification ID · Instant PDF download</li>
+        </ul>
+      </div>
+      <div style="background:var(--card);border:1px solid rgba(245,158,11,.25);border-radius:18px;padding:2.5rem;text-align:center;box-shadow:0 0 60px rgba(245,158,11,.08)">
+        <div style="font-size:3.5rem;margin-bottom:1.25rem">🏆</div>
+        <div style="font-family:var(--serif);font-size:1.6rem;color:var(--w);margin-bottom:.4rem">Certificate of Excellence</div>
+        <div style="font-size:.82rem;color:var(--g2);margin-bottom:1.5rem">International Youth Tech Olympiad 2026</div>
+        <div style="background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);border-radius:10px;padding:1rem;font-size:.82rem;color:var(--g1);line-height:1.9;text-align:left">
+          📛 Recipient Name<br>
+          📅 Date of Birth · Issue Date<br>
+          🏅 Category · Final Score<br>
+          ✍️ <strong style="color:var(--w)">Fahim Sikder</strong>, Founder &amp; Director, IYTO<br>
+          🔑 Verification ID: IYTO-2026-XXXXXXXX
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="sec">
+  <div class="cta-box">
+    <div class="eyebrow" style="justify-content:center">Start Today</div>
+    <h2 style="font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--w);margin-bottom:.85rem">Ready to Compete?</h2>
+    <p style="color:var(--g1);max-width:460px;margin:0 auto 2.5rem;line-height:1.82;font-size:.95rem">Free forever. No deadline. Open to all youth aged 10–20 worldwide. Create your account and start your journey today.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="register.html" class="btn-primary">Register Now — It's Free</a>
+      <a href="https://www.facebook.com/share/1CaQfMEmCt/" target="_blank" class="btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#3b82f6"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Follow on Facebook
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="display:inline-flex">
+          <div class="nav-logo-icon"><span>Iy</span></div>
+          <div class="nav-logo-words"><span class="nav-logo-name">IYTO</span><span class="nav-logo-sub">iyto.online</span></div>
+        </a>
+        <p>The world's most prestigious free technology competition for young innovators aged 10–20.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Competition</h5>
+        <ul>
+          <li><a href="olympiad.html">Register</a></li>
+          <li><a href="practice.html">Practice Hub</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="about.html">About IYTO</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="https://www.facebook.com/share/1CaQfMEmCt/" target="_blank">Facebook</a></li>
+          <li><a href="https://www.aibyfahim.com" target="_blank">aibyfahim.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 International Youth Tech Olympiad · iyto.official@hotmail.com</span>
+      <span>Founded by <a href="https://www.aibyfahim.com" target="_blank">Fahim Sikder</a></span>
+    </div>
+  </div>
+</footer>
+
+<div id="toasts"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+auth.onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById('nav-auth').style.display = 'none';
+    document.getElementById('nav-user').style.display = 'flex';
+    document.getElementById('nav-uname').textContent = 'Hi, ' + (user.displayName || 'User').split(' ')[0] + '!';
+    if (user.photoURL) {
+      document.getElementById('nav-uav').innerHTML = '<img src="' + user.photoURL + '">';
+    } else {
+      document.getElementById('nav-uav').textContent = (user.displayName || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+    }
+  }
+});
+</script>
+</body>
+</html>
